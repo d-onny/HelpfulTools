@@ -31,6 +31,7 @@ def numberOfCrafts():
             "add": {},
             "non": {},
             },
+        "Randomise": {},
         "Reforge": {}, #take index -1 of regex array
         "Misc": {},
     }
