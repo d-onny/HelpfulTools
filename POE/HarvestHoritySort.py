@@ -3,13 +3,19 @@ import json
 import re
 
 def numberOfCrafts():
-    url = "https://www.pathofexile.com/character-window/get-stash-items?league=LEAGUE_NAME&realm=pc&accountName=ACCOUNT_NAME&tabs=0&tabIndex=INDEX_OF_TAB"
-    id = "POESESSID:SESSION_ID_HERE"
+    # url = "https://www.pathofexile.com/character-window/get-stash-items?league=LEAGUE_NAME&realm=pc&accountName=ACCOUNT_NAME&tabs=0&tabIndex=INDEX_OF_TAB"
+    # id = "POESESSID:SESSION_ID_HERE"
+
+    with open('POE/credentials.json') as f:
+        credentials = json.load(f)
+
+    url = credentials.get("url")
+    id = "POESESSID=" + credentials.get("POESESSID")
     headers = {"cookie": id}
 
     response = requests.get(url, headers=headers)
     #If response is forbidden, session ID value is wrong most likely.
-    
+
     data = response.json()
 
     keyForItems = "items"
@@ -36,14 +42,22 @@ def numberOfCrafts():
                 filteredString = re.findall(r'\{(.*?)\}', singleCraft) #find all the strings between curly brackets
                 storeCraftInfo(dictCrafts, filteredString)
 
-    print(json.dumps(dictCrafts, indent=1))
+    #bark lines
+    for craft in dictCrafts:
+        print("-----" + craft + "-----")
+        for typeOfCraft in dictCrafts[craft]:
+            if (craft == "Remove"):
+                for subtype in dictCrafts[craft][typeOfCraft]:
+                    print(typeOfCraft + "-" + subtype + ": {}".format(dictCrafts[craft][typeOfCraft][subtype]))
+            else:
+                print(typeOfCraft + ": {}".format(dictCrafts[craft][typeOfCraft]))
 
 
 def storeCraftInfo(dataHolder:dict, stringArray:[str]):
     length = len(stringArray)
     firstKeyword = stringArray[0]
-    miscDict = dataHolder["Misc"]
-    dictToPopulate = dataHolder.get(firstKeyword, miscDict) #default value of misc, where any additional crafts are stored
+    # miscDict = dataHolder["Misc"]
+    dictToPopulate = dataHolder.get(firstKeyword, "Misc") #default value of misc, where any additional crafts are stored
 
     if firstKeyword == "Remove":
         if length == 2:
@@ -54,7 +68,15 @@ def storeCraftInfo(dataHolder:dict, stringArray:[str]):
             secondKeyword = "add"
         dictToPopulate = dictToPopulate[secondKeyword]
     
-    targetCraft = stringArray[-1]
+    
+    #Capture what the elemental change is.
+    if firstKeyword == "Change":
+        targetCraft = stringArray[1] + " to " + stringArray[2]
+    elif dictToPopulate == "Misc":
+        targetCraft = " ".join(stringArray)
+        dictToPopulate = dataHolder["Misc"]
+    else:
+        targetCraft = stringArray[-1]
     currentCount = dictToPopulate.setdefault(targetCraft,0) + 1
     dictToPopulate[targetCraft] = currentCount
 
