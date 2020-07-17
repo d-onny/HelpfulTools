@@ -78,11 +78,32 @@ def storeCraftInfo(dataHolder:dict, stringArray:[str]):
         targetCraft = " ".join(stringArray)
         dictToPopulate = dataHolder["Misc"]
     elif firstKeyword == "Augment":
-        targetCraft = stringArray[1]
+        targetCraft = findTargetCraft(stringArray)
     else:
         targetCraft = stringArray[-1]
     currentCount = dictToPopulate.setdefault(targetCraft,0) + 1
     dictToPopulate[targetCraft] = currentCount
+
+
+def findTargetCraft(stringArray:[str]):
+    '''
+    This is for the "Augment" craft. The regex finds the capital words and the placement of 
+    targeted craft is different depending on if it is a lucky craft or not.
+    '''
+    possibleAugmentCrafts = {"Fire", "Cold", "Lightning", "Physical", "Attack",
+                        "Life", "Speed", "Defence", "Caster", "Critical", "Chaos", "Influence"}
+
+    #If it is a "Lucky" craft, then the craft is located one index before.
+    if stringArray[-1] == "Lucky":
+        return stringArray[-2]
+
+    #Using the reversed stringArray for quicker lookup time since craft is usually near the end of the array.
+    for string in reversed(stringArray):
+        if string in possibleAugmentCrafts:
+            return string
+    
+    unidentified = "Can not identify craft for: " + " ".join(stringArray)
+    return unidentified
 
 if __name__ == "__main__":
     numberOfCrafts()
