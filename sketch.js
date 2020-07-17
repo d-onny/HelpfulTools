@@ -19,7 +19,6 @@ function draw() {
 function getRequest() {
   let combinedURL = "https://www.pathofexile.com/character-window/get-stash-items?league=Harvest&realm=pc&accountName=" + accountName 
                 + "&tabs=0&tabIndex=" + tabIndex;
-
   let data;
   httpGet(combinedURL, 'jsonp', false, function(response){
     data = response;
