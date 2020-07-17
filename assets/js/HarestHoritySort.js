@@ -9,7 +9,7 @@
         
         let request = new XMLHttpRequest();
         request.open("GET", combinedURL, false);
-        request.setRequestHeader("cookie", "POESESSID" + id);
+        request.setRequestHeader("Authorization", "POESESSID" + id); //check this
         request.send();
     }
 

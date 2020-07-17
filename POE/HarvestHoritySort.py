@@ -40,7 +40,8 @@ def numberOfCrafts():
         if item["typeLine"] ==  itemToIdentify:
             mods = item["craftedMods"]
             for singleCraft in mods:
-                filteredString = re.findall(r'\{(.*?)\}', singleCraft) #find all the strings between curly brackets
+                #\{(.*?)\} regex will find all strings that are between curly brackets
+                filteredString = re.findall(r'([non-]*?[A-Z][a-z]+)', singleCraft) #find all the strings between curly brackets
                 storeCraftInfo(dictCrafts, filteredString)
 
     #bark lines
@@ -72,7 +73,7 @@ def storeCraftInfo(dataHolder:dict, stringArray:[str]):
     
     #Capture what the elemental change is.
     if firstKeyword == "Change":
-        targetCraft = stringArray[1] + " to " + stringArray[2]
+        targetCraft = stringArray[1] + " to " + stringArray[3]
     elif dictToPopulate == "Misc":
         targetCraft = " ".join(stringArray)
         dictToPopulate = dataHolder["Misc"]
