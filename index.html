@@ -1,11 +1,35 @@
----
-layout: default
-title: random title
----
+<!DOCTYPE html>
+<html lang="">
 
-Some page content
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hortisorty</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
 
-<form>
+    body {
+      margin: 0;
+      display: flex;
+
+      /* This centers our sketch horizontally. */
+      justify-content: center;
+
+      /* This centers our sketch vertically. */
+      /* align-items: center; */
+    }
+  </style>
+
+
+  <script src="p5.min.js"></script>
+  <script src="p5.dom.min.js"></script>
+  <script src="sketch.js"></script>
+
+  
+  <form>
     <ul>
      <li>
        <label for="accountname">Account Name:</label>
@@ -20,8 +44,14 @@ Some page content
         <input type="text" id="sessID" name="sessID">
       </li>
      <li class="button">
-        <button type="submit" onclick="getFormData()">Send me to the sun</button>
+        <button type="button" onclick="getRequest()">Send me to the sun</button>
       </li>
     </ul>
-</form>
+  </form>
+  
+</head>
 
+<body>
+</body>
+
+</html>
