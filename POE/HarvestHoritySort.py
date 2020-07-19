@@ -77,7 +77,7 @@ def storeCraftInfo(dataHolder:dict, stringArray:[str]):
     elif dictToPopulate == "Misc":
         targetCraft = " ".join(stringArray)
         dictToPopulate = dataHolder["Misc"]
-    elif firstKeyword == "Augment":
+    elif firstKeyword == "Augment" or firstKeyword == "Randomise":
         targetCraft = findTargetCraft(stringArray)
     else:
         targetCraft = stringArray[-1]
